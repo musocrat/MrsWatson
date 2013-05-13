@@ -1,0 +1,390 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files\modules">
+      <UniqueIdentifier>{a9565941-e048-46de-a1f4-c204b1a9467a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\alac">
+      <UniqueIdentifier>{09dc106d-8382-404c-8031-28aff800aec3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\aes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\af_vfs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\AIFF.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\AudioFormat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\aupv.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\AVR.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\Buffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\CAF.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\compression.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\data.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\debug.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\error.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\extended.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\File.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\FileHandle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\FLACFile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\format.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\IFF.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\Instrument.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\IRCAM.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\Loop.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\Marker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\Miscellaneous.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\NeXT.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\NIST.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\openclose.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\PacketTable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\pcm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\query.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\Raw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\SampleVision.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\Setup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\Track.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\units.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\util.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\UUID.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\WAVE.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\VOC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\modules\ALAC.cpp">
+      <Filter>Source Files\modules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\modules\BlockCodec.cpp">
+      <Filter>Source Files\modules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\modules\FileModule.cpp">
+      <Filter>Source Files\modules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\modules\FLAC.cpp">
+      <Filter>Source Files\modules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\modules\G711.cpp">
+      <Filter>Source Files\modules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\modules\IMA.cpp">
+      <Filter>Source Files\modules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\modules\Module.cpp">
+      <Filter>Source Files\modules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\modules\ModuleState.cpp">
+      <Filter>Source Files\modules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\modules\MSADPCM.cpp">
+      <Filter>Source Files\modules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\modules\RebufferModule.cpp">
+      <Filter>Source Files\modules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\modules\SimpleModule.cpp">
+      <Filter>Source Files\modules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\alac\ag_dec.c">
+      <Filter>Source Files\alac</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\alac\ag_enc.c">
+      <Filter>Source Files\alac</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\alac\ALACBitUtilities.c">
+      <Filter>Source Files\alac</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\alac\ALACDecoder.cpp">
+      <Filter>Source Files\alac</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\alac\ALACEncoder.cpp">
+      <Filter>Source Files\alac</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\alac\dp_dec.c">
+      <Filter>Source Files\alac</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\alac\dp_enc.c">
+      <Filter>Source Files\alac</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\alac\EndianPortable.c">
+      <Filter>Source Files\alac</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\alac\matrix_dec.c">
+      <Filter>Source Files\alac</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\alac\matrix_enc.c">
+      <Filter>Source Files\alac</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\g711_conv.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\modules\PCMModule.cpp">
+      <Filter>Source Files\modules</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\af_vfs.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\afinternal.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\AIFF.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\audiofile.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\AudioFormat.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\aupvinternal.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\aupvlist.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\AVR.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\Buffer.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\byteorder.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\CAF.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\Compiler.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\compression.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\debug.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\error.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\extended.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\Features.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\File.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\FileHandle.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\FLACFile.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\g711.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\IFF.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\Instrument.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\IRCAM.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\Marker.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\NeXT.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\NIST.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\PacketTable.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\pcm.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\Raw.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\SampleVision.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\Setup.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\Shared.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\Tag.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\Track.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\units.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\util.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\UUID.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\WAVE.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\VOC.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\modules\ALAC.h">
+      <Filter>Source Files\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\modules\BlockCodec.h">
+      <Filter>Source Files\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\modules\FileModule.h">
+      <Filter>Source Files\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\modules\FLAC.h">
+      <Filter>Source Files\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\modules\G711.h">
+      <Filter>Source Files\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\modules\IMA.h">
+      <Filter>Source Files\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\modules\Module.h">
+      <Filter>Source Files\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\modules\ModuleState.h">
+      <Filter>Source Files\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\modules\MSADPCM.h">
+      <Filter>Source Files\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\modules\RebufferModule.h">
+      <Filter>Source Files\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\modules\SimpleModule.h">
+      <Filter>Source Files\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\alac\aglib.h">
+      <Filter>Source Files\alac</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\alac\ALACAudioTypes.h">
+      <Filter>Source Files\alac</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\alac\ALACBitUtilities.h">
+      <Filter>Source Files\alac</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\alac\ALACDecoder.h">
+      <Filter>Source Files\alac</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\alac\ALACEncoder.h">
+      <Filter>Source Files\alac</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\alac\dplib.h">
+      <Filter>Source Files\alac</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\alac\EndianPortable.h">
+      <Filter>Source Files\alac</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\alac\matrixlib.h">
+      <Filter>Source Files\alac</Filter>
+    </ClInclude>
+    <ClInclude Include="config.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\modules\PCMModule.h">
+      <Filter>Source Files\modules</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\vendor\audiofile\libaudiofile\Makefile.am">
+      <Filter>Source Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>

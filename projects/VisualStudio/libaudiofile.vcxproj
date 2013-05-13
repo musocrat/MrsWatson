@@ -1,0 +1,212 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{12598D26-80BC-47DF-8E86-84799E867540}</ProjectGuid>
+    <RootNamespace>libaudiofile</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)..\..\build\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)..\..\build\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)..\..\vendor\audiofile\libaudiofile;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)..\..\vendor\audiofile\libaudiofile;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>libm.lib</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\aes.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\af_vfs.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\AIFF.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\alac\ag_dec.c" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\alac\ag_enc.c" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\alac\ALACBitUtilities.c" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\alac\ALACDecoder.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\alac\ALACEncoder.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\alac\dp_dec.c" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\alac\dp_enc.c" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\alac\EndianPortable.c" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\alac\matrix_dec.c" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\alac\matrix_enc.c" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\AudioFormat.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\aupv.c" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\AVR.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\Buffer.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\CAF.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\compression.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\data.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\debug.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\error.c" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\extended.c" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\File.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\FileHandle.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\FLACFile.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\format.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\g711_conv.c" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\IFF.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\Instrument.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\IRCAM.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\Loop.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\Marker.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\Miscellaneous.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\modules\ALAC.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\modules\BlockCodec.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\modules\FileModule.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\modules\FLAC.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\modules\G711.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\modules\IMA.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\modules\Module.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\modules\ModuleState.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\modules\MSADPCM.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\modules\PCMModule.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\modules\RebufferModule.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\modules\SimpleModule.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\NeXT.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\NIST.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\openclose.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\PacketTable.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\pcm.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\query.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\Raw.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\SampleVision.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\Setup.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\Track.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\units.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\util.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\UUID.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\VOC.cpp" />
+    <ClCompile Include="..\..\vendor\audiofile\libaudiofile\WAVE.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\afinternal.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\af_vfs.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\AIFF.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\alac\aglib.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\alac\ALACAudioTypes.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\alac\ALACBitUtilities.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\alac\ALACDecoder.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\alac\ALACEncoder.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\alac\dplib.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\alac\EndianPortable.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\alac\matrixlib.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\audiofile.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\AudioFormat.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\aupvinternal.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\aupvlist.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\AVR.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\Buffer.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\byteorder.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\CAF.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\Compiler.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\compression.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\debug.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\error.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\extended.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\Features.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\File.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\FileHandle.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\FLACFile.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\g711.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\IFF.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\Instrument.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\IRCAM.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\Marker.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\modules\ALAC.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\modules\BlockCodec.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\modules\FileModule.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\modules\FLAC.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\modules\G711.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\modules\IMA.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\modules\Module.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\modules\ModuleState.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\modules\MSADPCM.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\modules\PCMModule.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\modules\RebufferModule.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\modules\SimpleModule.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\NeXT.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\NIST.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\PacketTable.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\pcm.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\Raw.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\SampleVision.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\Setup.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\Shared.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\Tag.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\Track.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\units.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\util.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\UUID.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\VOC.h" />
+    <ClInclude Include="..\..\vendor\audiofile\libaudiofile\WAVE.h" />
+    <ClInclude Include="config.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\vendor\audiofile\libaudiofile\Makefile.am" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
