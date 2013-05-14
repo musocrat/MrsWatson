@@ -21,6 +21,7 @@ elseif(MSVC)
     set_target_properties(mrswatsoncore PROPERTIES COMPILE_FLAGS "/D WIN32=1")
   endif()
 endif()
+add_dependencies(mrswatsoncore libaudiofile)
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   add_library(mrswatsoncore64 ${mrswatsoncore_SOURCES})
@@ -36,4 +37,5 @@ elseif(MSVC)
     set_target_properties(mrswatsoncore64 PROPERTIES COMPILE_FLAGS "/MACHINE:X64 /D WIN64=1")
   endif()
 endif()
+add_dependencies(mrswatsoncore64 libaudiofile64)
 
