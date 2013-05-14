@@ -32,3 +32,5 @@ elseif(MSVC)
   endif()
 endif()
 
+add_dependencies(mrswatsoncore libaudiofile)
+add_dependencies(mrswatsoncore64 libaudiofile64)
