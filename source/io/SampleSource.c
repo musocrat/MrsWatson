@@ -32,9 +32,8 @@
 #include "base/FileUtilities.h"
 #include "base/PlatformUtilities.h"
 #include "base/StringUtilities.h"
-#include "io/SampleSourceAiff.h"
-#include "io/SampleSourceFlac.h"
 #include "io/SampleSource.h"
+#include "io/SampleSourceAudiofile.h"
 #include "io/SampleSourcePcm.h"
 #include "io/SampleSourceSilence.h"
 #include "io/SampleSourceWave.h"
@@ -45,23 +44,13 @@ void sampleSourcePrintSupportedTypes(void) {
   // We can theoretically support more formats, pretty much anything audiofile supports
   // would work here. However, most of those file types are rather uncommon, and require
   // special setup when writing, so we only choose the most common ones.
-#if HAVE_LIBAUDIOFILE
+#if USE_LIBAUDIOFILE
   logInfo("- AIFF (via libaudiofile)");
-#else
-  logInfo("- AIFF (internal, experimental)");
-#endif
-#if HAVE_LIBFLAC
-  logInfo("- FLAC");
-#endif
-#if HAVE_LIBLAME
-  logInfo("- MP3");
-#endif
-#if HAVE_LIBVORBIS
-  logInfo("- OGG");
+  logInfo("- FLAC (via libaudiofile)");
 #endif
   // Always supported
-  logInfo("- PCM");
-#if HAVE_LIBAUDIOFILE
+  logInfo("- PCM (internal)");
+#if USE_LIBAUDIOFILE
   logInfo("- WAV (via libaudiofile)");
 #else
   logInfo("- WAV (internal)");
@@ -84,22 +73,12 @@ SampleSourceType sampleSourceGuess(const CharString sampleSourceTypeString) {
       else if(!strcasecmp(fileExtension, "pcm") || !strcasecmp(fileExtension, "raw") || !strcasecmp(fileExtension, "dat")) {
         return SAMPLE_SOURCE_TYPE_PCM;
       }
+#if USE_LIBAUDIOFILE
       else if(!strcasecmp(fileExtension, "aif") || !strcasecmp(fileExtension, "aiff")) {
         return SAMPLE_SOURCE_TYPE_AIFF;
       }
-#if HAVE_LIBFLAC
       else if(!strcasecmp(fileExtension, "flac")) {
         return SAMPLE_SOURCE_TYPE_FLAC;
-      }
-#endif
-#if HAVE_LIBLAME
-      else if(!strcasecmp(fileExtension, "mp3")) {
-        return SAMPLE_SOURCE_TYPE_MP3;
-      }
-#endif
-#if HAVE_LIBVORBIS
-      else if(!strcasecmp(fileExtension, "ogg")) {
-        return SAMPLE_SOURCE_TYPE_OGG;
       }
 #endif
       else if(!strcasecmp(fileExtension, "wav") || !strcasecmp(fileExtension, "wave")) {
@@ -131,22 +110,17 @@ SampleSource newSampleSource(SampleSourceType sampleSourceType, const CharString
       return newSampleSourceSilence();
     case SAMPLE_SOURCE_TYPE_PCM:
       return newSampleSourcePcm(sampleSourceName);
+#if USE_LIBAUDIOFILE
     case SAMPLE_SOURCE_TYPE_AIFF:
-      return newSampleSourceAiff(sampleSourceName);
-#if HAVE_LIBFLAC
+      return newSampleSourceAudiofile(sampleSourceName, sampleSourceType);
     case SAMPLE_SOURCE_TYPE_FLAC:
-      return newSampleSourceFlac(sampleSourceName);
-#endif
-#if HAVE_LIBLAME
-    case SAMPLE_SOURCE_TYPE_MP3:
-      return newSampleSourceMp3(sampleSourceName);
-#endif
-#if HAVE_LIBVORBIS
-    case SAMPLE_SOURCE_TYPE_OGG:
-      return newSampleSourceOgg(sampleSourceName);
-#endif
+      return newSampleSourceAudiofile(sampleSourceName, sampleSourceType);
+    case SAMPLE_SOURCE_TYPE_WAVE:
+      return newSampleSourceAudiofile(sampleSourceName, sampleSourceType);
+#else
     case SAMPLE_SOURCE_TYPE_WAVE:
       return newSampleSourceWave(sampleSourceName);
+#endif
     default:
       return NULL;
   }

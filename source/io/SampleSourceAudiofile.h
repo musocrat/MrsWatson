@@ -30,7 +30,7 @@
 #ifndef MrsWatson_SampleSourceAudiofile_h
 #define MrsWatson_SampleSourceAudiofile_h
 
-#if HAVE_LIBAUDIOFILE
+#if USE_LIBAUDIOFILE
 #include "audiofile.h"
 
 // This isn't a real SampleSource class, but rather a base class to facilitate
@@ -43,13 +43,9 @@ typedef struct {
   float* interlacedBuffer;
   short* pcmBuffer;
 } SampleSourceAudiofileDataMembers;
-
 typedef SampleSourceAudiofileDataMembers* SampleSourceAudiofileData;
 
-boolByte readBlockFromAudiofile(void* sampleSourcePtr, SampleBuffer sampleBuffer);
-boolByte writeBlockToAudiofile(void* sampleSourcePtr, const SampleBuffer sampleBuffer);
-void closeSampleSourceAudiofile(void* sampleSourceDataPtr);
-void freeSampleSourceDataAudiofile(void* sampleSourceDataPtr);
+SampleSource newSampleSourceAudiofile(const CharString sampleSourceName, const SampleSourceType sampleSourceType);
 
 #endif
 #endif

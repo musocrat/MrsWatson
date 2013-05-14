@@ -34,16 +34,25 @@
 
 // Force all samples to be within {1.0, -1.0} range. This uses a bit of extra
 // CPU, and I'm not sure it's even necessary, so it is disabled at present.
+#ifndef USE_BRICKWALL_LIMITER
 #define USE_BRICKWALL_LIMITER 0
+#endif
+
+// Define to 1 to use audiofile to read files, otherwise an internal WAVE
+// sample source will be used instead. AIFF and other file types (except for
+// PCM) are not supported, hence the migration to libaudiofile.
+// However, if only PCM or WAVE support is needed, this can be disabled and
+// a much smaller binary will be produced as a result.
+#ifndef USE_LIBAUDIOFILE
+#define USE_LIBAUDIOFILE 0
+#endif
 
 typedef enum {
   SAMPLE_SOURCE_TYPE_INVALID,
   SAMPLE_SOURCE_TYPE_SILENCE,
-  SAMPLE_SOURCE_TYPE_PCM,
   SAMPLE_SOURCE_TYPE_AIFF,
   SAMPLE_SOURCE_TYPE_FLAC,
-  SAMPLE_SOURCE_TYPE_MP3,
-  SAMPLE_SOURCE_TYPE_OGG,
+  SAMPLE_SOURCE_TYPE_PCM,
   SAMPLE_SOURCE_TYPE_WAVE,
   NUM_SAMPLE_SOURCES
 } SampleSourceType;

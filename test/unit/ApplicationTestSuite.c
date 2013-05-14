@@ -1,15 +1,24 @@
 #include "ApplicationRunner.h"
+#include "io/SampleSource.h"
 
 int runApplicationTestSuite(TestEnvironment environment);
 int runApplicationTestSuite(TestEnvironment environment) {
   // Test resource paths
   const char* resourcesPath = environment->resourcesPath;
   CharString _a440_mono_pcm = getTestResourceFilename(resourcesPath, "audio", "a440-mono.pcm");
+#if USE_LIBAUDIOFILE
+  CharString _a440_stereo_aif;
+  CharString _a440_stereo_flac;
+#endif
   CharString _a440_stereo_pcm = getTestResourceFilename(resourcesPath, "audio", "a440-stereo.pcm");
   CharString _a440_stereo_wav = getTestResourceFilename(resourcesPath, "audio", "a440-stereo.wav");
   CharString _c_scale_mid = getTestResourceFilename(resourcesPath, "midi", "c-scale.mid");
   CharString _again_test_fxp = getTestResourceFilename(resourcesPath, "presets", "again-test.fxp");
   const char* a440_mono_pcm = _a440_mono_pcm->data;
+#if USE_LIBAUDIOFILE
+  const char* a440_stereo_aif = _a400_stereo_aif->data;
+  const char* a440_stereo_flac = _a400_stereo_flac->data;
+#endif
   const char* a440_stereo_pcm = _a440_stereo_pcm->data;
   const char* a440_stereo_wav = _a440_stereo_wav->data;
   const char* c_scale_mid = _c_scale_mid->data;
@@ -64,6 +73,24 @@ int runApplicationTestSuite(TestEnvironment environment) {
     buildTestArgumentString("--plugin again --input \"%s\"", a440_stereo_pcm),
     RETURN_CODE_SUCCESS, "wav"
   );
+#if USE_LIBAUDIOFILE
+  runApplicationTest(environment, "Read AIFF file",
+    buildTestArgumentString("--plugin again --input \"%s\"", a440_stereo_aif),
+    RETURN_CODE_SUCCESS, kDefaultTestOutputFileType
+  );
+  runApplicationTest(environment, "Write AIFF file",
+    buildTestArgumentString("--plugin again --input \"%s\"", a440_stereo_pcm),
+    RETURN_CODE_SUCCESS, "aif"
+  );
+  runApplicationTest(environment, "Read FLAC file",
+    buildTestArgumentString("--plugin again --input \"%s\"", a440_stereo_flac),
+    RETURN_CODE_SUCCESS, kDefaultTestOutputFileType
+  );
+    runApplicationTest(environment, "Write FLAC file",
+    buildTestArgumentString("--plugin again --input \"%s\"", a440_stereo_pcm),
+    RETURN_CODE_SUCCESS, "flac"
+  );
+#endif
 
   // Configuration tests
   runApplicationTest(environment, "Read mono input source",
@@ -129,6 +156,10 @@ int runApplicationTestSuite(TestEnvironment environment) {
     environment->results->numSkips);
 
   freeCharString(_a440_mono_pcm);
+#if USE_LIBAUDIOFILE
+  freeCharString(_a440_stereo_aif);
+  freeCharString(_a440_stereo_flac);
+#endif
   freeCharString(_a440_stereo_pcm);
   freeCharString(_a440_stereo_wav);
   freeCharString(_c_scale_mid);

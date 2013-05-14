@@ -35,9 +35,9 @@
 #include "io/SampleSourcePcm.h"
 #include "logging/EventLogger.h"
 
-#if HAVE_LIBAUDIOFILE
+#if USE_LIBAUDIOFILE
 
-boolByte readBlockFromAudiofile(void* sampleSourcePtr, SampleBuffer sampleBuffer) {
+static boolByte _readBlockFromAudiofile(void* sampleSourcePtr, SampleBuffer sampleBuffer) {
   SampleSource sampleSource = (SampleSource)sampleSourcePtr;
   SampleSourceAudiofileData extraData = (SampleSourceAudiofileData)(sampleSource->extraData);
 
@@ -75,7 +75,7 @@ boolByte readBlockFromAudiofile(void* sampleSourcePtr, SampleBuffer sampleBuffer
   }
 }
 
-boolByte writeBlockToAudiofile(void* sampleSourcePtr, const SampleBuffer sampleBuffer) {
+static boolByte _writeBlockToAudiofile(void* sampleSourcePtr, const SampleBuffer sampleBuffer) {
   SampleSource sampleSource = (SampleSource)sampleSourcePtr;
   SampleSourceAudiofileData extraData = (SampleSourceAudiofileData)(sampleSource->extraData);
   int result = 0;
@@ -91,7 +91,72 @@ boolByte writeBlockToAudiofile(void* sampleSourcePtr, const SampleBuffer sampleB
   return (result == 1);
 }
 
-void closeSampleSourceAudiofile(void* sampleSourcePtr) {
+static boolByte _configureOutputSource(AFfilesetup outfileSetup, SampleSourceType sampleSourceType) {
+  switch(sampleSourceType) {
+    case SAMPLE_SOURCE_TYPE_AIFF:
+      afInitFileFormat(outfileSetup, AF_FILE_AIFF);
+      afInitByteOrder(outfileSetup, AF_DEFAULT_TRACK, AF_BYTEORDER_BIGENDIAN);
+      afInitChannels(outfileSetup, AF_DEFAULT_TRACK, getNumChannels());
+      afInitRate(outfileSetup, AF_DEFAULT_TRACK, getSampleRate());
+      afInitSampleFormat(outfileSetup, AF_DEFAULT_TRACK, AF_SAMPFMT_TWOSCOMP, DEFAULT_BITRATE);
+      return true;
+    case SAMPLE_SOURCE_TYPE_FLAC:
+      afInitFileFormat(outfileSetup, AF_FILE_FLAC);
+      afInitChannels(outfileSetup, AF_DEFAULT_TRACK, getNumChannels());
+      afInitSampleFormat(outfileSetup, AF_DEFAULT_TRACK, AF_SAMPFMT_TWOSCOMP, DEFAULT_BITRATE);
+      afInitCompression(outfileSetup, AF_DEFAULT_TRACK, AF_COMPRESSION_FLAC);
+      return true;
+    case SAMPLE_SOURCE_TYPE_WAVE:
+      afInitFileFormat(outfileSetup, AF_FILE_WAVE);
+      afInitByteOrder(outfileSetup, AF_DEFAULT_TRACK, AF_BYTEORDER_LITTLEENDIAN);
+      afInitChannels(outfileSetup, AF_DEFAULT_TRACK, getNumChannels());
+      afInitRate(outfileSetup, AF_DEFAULT_TRACK, getSampleRate());
+      afInitSampleFormat(outfileSetup, AF_DEFAULT_TRACK, AF_SAMPFMT_TWOSCOMP, DEFAULT_BITRATE);
+      return true;
+    default:
+      logUnsupportedFeature("Other audiofile types");
+      return false;
+  }
+}
+
+static boolByte _openSampleSourceAudiofile(void *sampleSourcePtr, const SampleSourceOpenAs openAs) {
+  SampleSource sampleSource = (SampleSource)sampleSourcePtr;
+  SampleSourceAudiofileData extraData = sampleSource->extraData;
+  AFfilesetup outfileSetup;
+
+  if(openAs == SAMPLE_SOURCE_OPEN_READ) {
+    extraData->fileHandle = afOpenFile(sampleSource->sourceName->data, "r", NULL);
+    if(extraData->fileHandle != NULL) {
+      setNumChannels(afGetVirtualChannels(extraData->fileHandle, AF_DEFAULT_TRACK));
+      setSampleRate((float)afGetRate(extraData->fileHandle, AF_DEFAULT_TRACK));
+    }
+  }
+  else if(openAs == SAMPLE_SOURCE_OPEN_WRITE) {
+    outfileSetup = afNewFileSetup();
+    if(_configureOutputSource(outfileSetup, sampleSource->sampleSourceType)) {
+      extraData->fileHandle = afOpenFile(sampleSource->sourceName->data, "w", outfileSetup);
+      afFreeFileSetup(outfileSetup);
+    }
+    else {
+      return false;
+    }
+  }
+  else {
+    logInternalError("Invalid type for openAs in file");
+    return false;
+  }
+
+  if(extraData->fileHandle == NULL) {
+    logError("File '%s' could not be opened for %s",
+      sampleSource->sourceName->data, openAs == SAMPLE_SOURCE_OPEN_READ ? "reading" : "writing");
+    return false;
+  }
+
+  sampleSource->openedAs = openAs;
+  return true;
+}
+
+static void _closeSampleSourceAudiofile(void* sampleSourcePtr) {
   SampleSource sampleSource = (SampleSource)sampleSourcePtr;
   SampleSourceAudiofileData extraData = (SampleSourceAudiofileData)sampleSource->extraData;
   if(extraData->fileHandle != NULL) {
@@ -99,7 +164,7 @@ void closeSampleSourceAudiofile(void* sampleSourcePtr) {
   }
 }
 
-void freeSampleSourceDataAudiofile(void* sampleSourceDataPtr) {
+static void _freeSampleSourceDataAudiofile(void* sampleSourceDataPtr) {
   SampleSourceAudiofileData extraData = (SampleSourceAudiofileData)sampleSourceDataPtr;
   if(extraData->interlacedBuffer != NULL) {
     free(extraData->interlacedBuffer);
@@ -108,6 +173,30 @@ void freeSampleSourceDataAudiofile(void* sampleSourceDataPtr) {
     free(extraData->pcmBuffer);
   }
   free(extraData);
+}
+
+SampleSource newSampleSourceAudiofile(const CharString sampleSourceName, const SampleSourceType sampleSourceType) {
+  SampleSource sampleSource = (SampleSource)malloc(sizeof(SampleSourceMembers));
+  SampleSourceAudiofileData extraData = (SampleSourceAudiofileData)malloc(sizeof(SampleSourceAudiofileDataMembers));
+
+  sampleSource->sampleSourceType = sampleSourceType;
+  sampleSource->openedAs = SAMPLE_SOURCE_OPEN_NOT_OPENED;
+  sampleSource->sourceName = newCharString();
+  charStringCopy(sampleSource->sourceName, sampleSourceName);
+  sampleSource->numSamplesProcessed = 0;
+
+  sampleSource->openSampleSource = _openSampleSourceAudiofile;
+  sampleSource->readSampleBlock = _readBlockFromAudiofile;
+  sampleSource->writeSampleBlock = _writeBlockToAudiofile;
+  sampleSource->freeSampleSourceData = _freeSampleSourceDataAudiofile;
+  sampleSource->closeSampleSource = _closeSampleSourceAudiofile;
+
+  extraData->fileHandle = NULL;
+  extraData->interlacedBuffer = NULL;
+  extraData->pcmBuffer = NULL;
+
+  sampleSource->extraData = extraData;
+  return sampleSource;
 }
 
 #endif

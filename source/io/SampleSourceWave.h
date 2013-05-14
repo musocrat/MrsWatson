@@ -32,6 +32,5 @@
 #include "io/SampleSourcePcm.h"
 
 SampleSource newSampleSourceWave(const CharString sampleSourceName);
-void closeSampleSourceWave(void* pcmData);
 
 #endif
