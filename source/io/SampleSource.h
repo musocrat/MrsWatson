@@ -44,7 +44,7 @@
 // However, if only PCM or WAVE support is needed, this can be disabled and
 // a much smaller binary will be produced as a result.
 #ifndef USE_LIBAUDIOFILE
-#define USE_LIBAUDIOFILE 0
+#define USE_LIBAUDIOFILE 1
 #endif
 
 // Support FLAC audio via audiofile
