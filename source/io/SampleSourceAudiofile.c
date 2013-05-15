@@ -100,12 +100,14 @@ static boolByte _configureOutputSource(AFfilesetup outfileSetup, SampleSourceTyp
       afInitRate(outfileSetup, AF_DEFAULT_TRACK, getSampleRate());
       afInitSampleFormat(outfileSetup, AF_DEFAULT_TRACK, AF_SAMPFMT_TWOSCOMP, DEFAULT_BITRATE);
       return true;
+#if USE_LIBFLAC
     case SAMPLE_SOURCE_TYPE_FLAC:
       afInitFileFormat(outfileSetup, AF_FILE_FLAC);
       afInitChannels(outfileSetup, AF_DEFAULT_TRACK, getNumChannels());
       afInitSampleFormat(outfileSetup, AF_DEFAULT_TRACK, AF_SAMPFMT_TWOSCOMP, DEFAULT_BITRATE);
       afInitCompression(outfileSetup, AF_DEFAULT_TRACK, AF_COMPRESSION_FLAC);
       return true;
+#endif
     case SAMPLE_SOURCE_TYPE_WAVE:
       afInitFileFormat(outfileSetup, AF_FILE_WAVE);
       afInitByteOrder(outfileSetup, AF_DEFAULT_TRACK, AF_BYTEORDER_LITTLEENDIAN);

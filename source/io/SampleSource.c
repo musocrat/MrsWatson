@@ -77,9 +77,11 @@ SampleSourceType sampleSourceGuess(const CharString sampleSourceTypeString) {
       else if(!strcasecmp(fileExtension, "aif") || !strcasecmp(fileExtension, "aiff")) {
         return SAMPLE_SOURCE_TYPE_AIFF;
       }
+#if USE_LIBFLAC
       else if(!strcasecmp(fileExtension, "flac")) {
         return SAMPLE_SOURCE_TYPE_FLAC;
       }
+#endif
 #endif
       else if(!strcasecmp(fileExtension, "wav") || !strcasecmp(fileExtension, "wave")) {
         return SAMPLE_SOURCE_TYPE_WAVE;
@@ -113,8 +115,10 @@ SampleSource newSampleSource(SampleSourceType sampleSourceType, const CharString
 #if USE_LIBAUDIOFILE
     case SAMPLE_SOURCE_TYPE_AIFF:
       return newSampleSourceAudiofile(sampleSourceName, sampleSourceType);
+#if USE_LIBFLAC
     case SAMPLE_SOURCE_TYPE_FLAC:
       return newSampleSourceAudiofile(sampleSourceName, sampleSourceType);
+#endif
     case SAMPLE_SOURCE_TYPE_WAVE:
       return newSampleSourceAudiofile(sampleSourceName, sampleSourceType);
 #else

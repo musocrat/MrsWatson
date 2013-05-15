@@ -8,7 +8,9 @@ int runApplicationTestSuite(TestEnvironment environment) {
   CharString _a440_mono_pcm = getTestResourceFilename(resourcesPath, "audio", "a440-mono.pcm");
 #if USE_LIBAUDIOFILE
   CharString _a440_stereo_aif;
+#if USE_LIBFLAC
   CharString _a440_stereo_flac;
+#endif
 #endif
   CharString _a440_stereo_pcm = getTestResourceFilename(resourcesPath, "audio", "a440-stereo.pcm");
   CharString _a440_stereo_wav = getTestResourceFilename(resourcesPath, "audio", "a440-stereo.wav");
@@ -17,7 +19,9 @@ int runApplicationTestSuite(TestEnvironment environment) {
   const char* a440_mono_pcm = _a440_mono_pcm->data;
 #if USE_LIBAUDIOFILE
   const char* a440_stereo_aif = _a400_stereo_aif->data;
+#if USE_LIBFLAC
   const char* a440_stereo_flac = _a400_stereo_flac->data;
+#endif
 #endif
   const char* a440_stereo_pcm = _a440_stereo_pcm->data;
   const char* a440_stereo_wav = _a440_stereo_wav->data;
@@ -82,6 +86,7 @@ int runApplicationTestSuite(TestEnvironment environment) {
     buildTestArgumentString("--plugin again --input \"%s\"", a440_stereo_pcm),
     RETURN_CODE_SUCCESS, "aif"
   );
+#if USE_LIBFLAC
   runApplicationTest(environment, "Read FLAC file",
     buildTestArgumentString("--plugin again --input \"%s\"", a440_stereo_flac),
     RETURN_CODE_SUCCESS, kDefaultTestOutputFileType
@@ -90,6 +95,7 @@ int runApplicationTestSuite(TestEnvironment environment) {
     buildTestArgumentString("--plugin again --input \"%s\"", a440_stereo_pcm),
     RETURN_CODE_SUCCESS, "flac"
   );
+#endif
 #endif
 
   // Configuration tests
