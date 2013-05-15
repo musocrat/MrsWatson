@@ -40,26 +40,17 @@
 static boolByte _readBlockFromAudiofile(void* sampleSourcePtr, SampleBuffer sampleBuffer) {
   SampleSource sampleSource = (SampleSource)sampleSourcePtr;
   SampleSourceAudiofileData extraData = (SampleSourceAudiofileData)(sampleSource->extraData);
-
   int numFramesRead;
-  int currentInterlacedSample = 0;
-  int currentDeinterlacedSample = 0;
-  int currentChannel;
-  
-  if(extraData->interlacedBuffer == NULL) {
-    extraData->interlacedBuffer = (float*)malloc(sizeof(float) * getNumChannels() * getBlocksize());
-  }
-  memset(extraData->interlacedBuffer, 0, sizeof(float) * getNumChannels() * getBlocksize());
 
-  numFramesRead = afReadFrames(extraData->fileHandle, AF_DEFAULT_TRACK, extraData->interlacedBuffer, getBlocksize());
+  if(extraData->pcmBuffer == NULL) {
+    extraData->pcmBuffer = (short*)malloc(sizeof(short) * getNumChannels() * getBlocksize());
+  }
+  memset(extraData->pcmBuffer, 0, sizeof(short) * getNumChannels() * getBlocksize());
+
+  numFramesRead = afReadFrames(extraData->fileHandle, AF_DEFAULT_TRACK, extraData->pcmBuffer, getBlocksize());
   // Loop over the number of frames wanted, not the number we actually got. This means that the last block will
   // be partial, but then we write empty data to the end, since the interlaced buffer gets cleared above.
-  while(currentInterlacedSample < getBlocksize() * getNumChannels()) {
-    for(currentChannel = 0; currentChannel < sampleBuffer->numChannels; currentChannel++) {
-      sampleBuffer->samples[currentChannel][currentDeinterlacedSample] = extraData->interlacedBuffer[currentInterlacedSample++];
-    }
-    currentDeinterlacedSample++;
-  }
+  convertPcmDataToSampleBuffer(extraData->pcmBuffer, sampleBuffer);
 
   sampleSource->numSamplesProcessed += numFramesRead;
   if(numFramesRead == 0) {
@@ -168,9 +159,6 @@ static void _closeSampleSourceAudiofile(void* sampleSourcePtr) {
 
 static void _freeSampleSourceDataAudiofile(void* sampleSourceDataPtr) {
   SampleSourceAudiofileData extraData = (SampleSourceAudiofileData)sampleSourceDataPtr;
-  if(extraData->interlacedBuffer != NULL) {
-    free(extraData->interlacedBuffer);
-  }
   if(extraData->pcmBuffer != NULL) {
     free(extraData->pcmBuffer);
   }
@@ -194,7 +182,6 @@ SampleSource newSampleSourceAudiofile(const CharString sampleSourceName, const S
   sampleSource->closeSampleSource = _closeSampleSourceAudiofile;
 
   extraData->fileHandle = NULL;
-  extraData->interlacedBuffer = NULL;
   extraData->pcmBuffer = NULL;
 
   sampleSource->extraData = extraData;
