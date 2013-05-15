@@ -122,7 +122,7 @@ size_t sampleSourcePcmRead(SampleSourcePcmData pcmData, SampleBuffer sampleBuffe
   }
   logDebug("Read %d samples from PCM file", pcmSamplesRead);
 
-  _convertPcmDataToSampleBuffer(pcmData->interlacedPcmDataBuffer, sampleBuffer);
+  convertPcmDataToSampleBuffer(pcmData->interlacedPcmDataBuffer, sampleBuffer);
   return pcmSamplesRead;
 }
 

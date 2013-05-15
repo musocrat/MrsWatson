@@ -50,6 +50,7 @@ SampleSource newSampleSourcePcm(const CharString sampleSourceName);
 size_t sampleSourcePcmRead(SampleSourcePcmData pcmData, SampleBuffer sampleBuffer);
 size_t sampleSourcePcmWrite(SampleSourcePcmData pcmData, const SampleBuffer sampleBuffer);
 // TODO: Move to SampleBuffer class
+void convertPcmDataToSampleBuffer(const short* inPcmSamples, SampleBuffer sampleBuffer);
 void convertSampleBufferToPcmData(const SampleBuffer sampleBuffer, short* outPcmSamples, boolByte isDataLittleEndian);
 
 void sampleSourcePcmSetSampleRate(void* sampleSourcePtr, double sampleRate);
