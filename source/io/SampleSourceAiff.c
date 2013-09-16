@@ -145,11 +145,13 @@ SampleSource _newSampleSourceAiff(const CharString sampleSourceName) {
   extraData->isLittleEndian = false;
   extraData->fileHandle = NULL;
   extraData->dataBufferNumItems = 0;
-  extraData->interlacedPcmDataBuffer = NULL;
+  // Since this is a union with members of equal sizes (2 pointers), we can just
+  // set one of them to NULL and effectively NULL the entire structure.
+  extraData->interlacedPcmBuffer.ints = NULL;
 
   extraData->numChannels = getNumChannels();
+  extraData->bitDepth = DEFAULT_BIT_DEPTH;
   extraData->sampleRate = (unsigned int)getSampleRate();
-  extraData->bitsPerSample = 16;
 #endif
 
   sampleSource->extraData = extraData;

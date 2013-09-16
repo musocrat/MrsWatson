@@ -34,6 +34,18 @@
 #include "io/SampleSourcePcm.h"
 #include "logging/EventLogger.h"
 
+boolByte isValidBitDepth(unsigned short bitDepth) {
+  switch(bitDepth) {
+    case 8:
+    case 16:
+    case 24:
+    case 32:
+      return true;
+    default:
+      return false;
+  }
+}
+
 static boolByte openSampleSourcePcm(void* sampleSourcePtr, const SampleSourceOpenAs openAs) {
   SampleSource sampleSource = (SampleSource)sampleSourcePtr;
   SampleSourcePcmData extraData = (SampleSourcePcmData)(sampleSource->extraData);
@@ -76,6 +88,8 @@ static boolByte openSampleSourcePcm(void* sampleSourcePtr, const SampleSourceOpe
 
 size_t sampleSourcePcmRead(SampleSourcePcmData self, SampleBuffer sampleBuffer) {
   size_t pcmSamplesRead = 0;
+  size_t sampleSize = 0;
+  void* sampleData = NULL;
 
   if(self == NULL || self->fileHandle == NULL) {
     logCritical("Corrupt PCM data structure");
@@ -84,13 +98,41 @@ size_t sampleSourcePcmRead(SampleSourcePcmData self, SampleBuffer sampleBuffer) 
 
   if(self->dataBufferNumItems == 0) {
     self->dataBufferNumItems = (size_t)(sampleBuffer->numChannels * sampleBuffer->blocksize);
-    self->interlacedPcmDataBuffer = (short*)malloc(sizeof(short) * self->dataBufferNumItems);
+    switch(self->bitDepth) {
+      case 8:
+      case 16:
+        self->interlacedPcmBuffer.shorts = (short*)malloc(sizeof(short) * self->dataBufferNumItems);
+        break;
+      case 24:
+      case 32:
+        self->interlacedPcmBuffer.ints = (int*)malloc(sizeof(int) * self->dataBufferNumItems);
+        break;
+      default:
+        logInternalError("Invalid bit depth in sampleSourcePcmRead");
+        return 0;
+    }
+  }
+
+  switch(self->bitDepth) {
+    case 8:
+    case 16:
+      sampleSize = sizeof(short);
+      sampleData = self->interlacedPcmBuffer.shorts;
+      break;
+    case 24:
+    case 32:
+      sampleSize = sizeof(int);
+      sampleData = self->interlacedPcmBuffer.ints;
+      break;
+    default:
+      logInternalError("Invalid bit depth in sampleSourcePcmRead");
+      return 0;
   }
 
   // Clear the PCM data buffer, or else the last block will have dirty samples in the end
-  memset(self->interlacedPcmDataBuffer, 0, sizeof(short) * self->dataBufferNumItems);
+  memset(sampleData, 0, sampleSize * self->dataBufferNumItems);
 
-  pcmSamplesRead = fread(self->interlacedPcmDataBuffer, sizeof(short), self->dataBufferNumItems, self->fileHandle);
+  pcmSamplesRead = fread(sampleData, sampleSize, self->dataBufferNumItems, self->fileHandle);
   if(pcmSamplesRead < self->dataBufferNumItems) {
     logDebug("End of PCM file reached");
     // Set the blocksize of the sample buffer to be the number of frames read
@@ -98,7 +140,7 @@ size_t sampleSourcePcmRead(SampleSourcePcmData self, SampleBuffer sampleBuffer) 
   }
   logDebug("Read %d samples from PCM file", pcmSamplesRead);
 
-  sampleBufferCopyPcmSamples(sampleBuffer, self->interlacedPcmDataBuffer);
+  sampleBufferCopyPcmSamples(sampleBuffer, sampleData, self->bitDepth);
   return pcmSamplesRead;
 }
 
@@ -114,6 +156,10 @@ static boolByte readBlockFromPcmFile(void* sampleSourcePtr, SampleBuffer sampleB
 size_t sampleSourcePcmWrite(SampleSourcePcmData self, const SampleBuffer sampleBuffer) {
   size_t pcmSamplesWritten = 0;
   size_t numSamplesToWrite = (size_t)(sampleBuffer->numChannels * sampleBuffer->blocksize);
+  // Right now we only support writing 16-bit audio files, otherwise the option
+  // arguments get really complicated. However supporting different bit rates
+  // shouldn't be impossible here.
+  size_t sampleSize = sizeof(short);
 
   if(self == NULL || self->fileHandle == NULL) {
     logCritical("Corrupt PCM data structure");
@@ -122,14 +168,15 @@ size_t sampleSourcePcmWrite(SampleSourcePcmData self, const SampleBuffer sampleB
 
   if(self->dataBufferNumItems == 0) {
     self->dataBufferNumItems = (size_t)(sampleBuffer->numChannels * sampleBuffer->blocksize);
-    self->interlacedPcmDataBuffer = (short*)malloc(sizeof(short) * self->dataBufferNumItems);
+    self->interlacedPcmBuffer.shorts = (short*)malloc(sampleSize * self->dataBufferNumItems);
   }
 
   // Clear the PCM data buffer just to be safe
-  memset(self->interlacedPcmDataBuffer, 0, sizeof(short) * self->dataBufferNumItems);
+  memset(self->interlacedPcmBuffer.shorts, 0, sampleSize * self->dataBufferNumItems);
 
-  sampleBufferGetPcmSamples(sampleBuffer, self->interlacedPcmDataBuffer, (boolByte)(self->isLittleEndian != isHostLittleEndian()));
-  pcmSamplesWritten = fwrite(self->interlacedPcmDataBuffer, sizeof(short), numSamplesToWrite, self->fileHandle);
+  sampleBufferGetPcmSamples(sampleBuffer, self->interlacedPcmBuffer.shorts,
+    self->bitDepth, (boolByte)(self->isLittleEndian != isHostLittleEndian()));
+  pcmSamplesWritten = fwrite(self->interlacedPcmBuffer.shorts, sampleSize, numSamplesToWrite, self->fileHandle);
   if(pcmSamplesWritten < numSamplesToWrite) {
     logWarn("Short write to PCM file");
     return pcmSamplesWritten;
@@ -155,10 +202,10 @@ static void _closeSampleSourcePcm(void* sampleSourcePtr) {
   }
 }
 
-void sampleSourcePcmSetSampleRate(void* sampleSourcePtr, double sampleRate) {
+void sampleSourcePcmSetBitDepth(void* sampleSourcePtr, unsigned short bitDepth) {
   SampleSource sampleSource = (SampleSource)sampleSourcePtr;
   SampleSourcePcmData extraData = (SampleSourcePcmData)sampleSource->extraData;
-  extraData->sampleRate = (unsigned int)sampleRate;
+  extraData->bitDepth = bitDepth;
 }
 
 void sampleSourcePcmSetNumChannels(void* sampleSourcePtr, unsigned short numChannels) {
@@ -167,9 +214,26 @@ void sampleSourcePcmSetNumChannels(void* sampleSourcePtr, unsigned short numChan
   extraData->numChannels = numChannels;
 }
 
+void sampleSourcePcmSetSampleRate(void* sampleSourcePtr, double sampleRate) {
+  SampleSource sampleSource = (SampleSource)sampleSourcePtr;
+  SampleSourcePcmData extraData = (SampleSourcePcmData)sampleSource->extraData;
+  extraData->sampleRate = (unsigned int)sampleRate;
+}
+
 void freeSampleSourceDataPcm(void* sampleSourceDataPtr) {
   SampleSourcePcmData extraData = (SampleSourcePcmData)sampleSourceDataPtr;
-  free(extraData->interlacedPcmDataBuffer);
+  switch(extraData->bitDepth) {
+    case 8:
+    case 16:
+      free(extraData->interlacedPcmBuffer.shorts);
+      break;
+    case 24:
+    case 32:
+      free(extraData->interlacedPcmBuffer.ints);
+      break;
+    default:
+      break;
+  }
   free(extraData);
 }
 
@@ -193,11 +257,13 @@ SampleSource _newSampleSourcePcm(const CharString sampleSourceName) {
   extraData->isLittleEndian = true;
   extraData->fileHandle = NULL;
   extraData->dataBufferNumItems = 0;
-  extraData->interlacedPcmDataBuffer = NULL;
+  // Since this is a union with members of equal sizes (2 pointers), we can just
+  // set one of them to NULL and effectively NULL the entire structure.
+  extraData->interlacedPcmBuffer.ints = NULL;
 
   extraData->numChannels = getNumChannels();
+  extraData->bitDepth = DEFAULT_BIT_DEPTH;
   extraData->sampleRate = (unsigned int)getSampleRate();
-  extraData->bitsPerSample = 16;
   sampleSource->extraData = extraData;
 
   return sampleSource;

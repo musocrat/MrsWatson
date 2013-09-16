@@ -79,7 +79,6 @@ unsigned short getTimeSignatureNoteValue(void) {
   return _getAudioSettings()->timeSignatureNoteValue;
 }
 
-
 void setSampleRate(const double sampleRate) {
   if(sampleRate <= 0.0f) {
     logError("Ignoring attempt to set sample rate to %f", sampleRate);
