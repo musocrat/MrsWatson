@@ -424,7 +424,6 @@ int mrsWatsonMain(ErrorReporter errorReporter, int argc, char** argv) {
       return result;
     }
   }
-
   // Copy plugins before they have been opened
   if(programOptions->options[OPTION_ERROR_REPORT]->enabled) {
     if(errorReporterShouldCopyPlugins()) {
@@ -444,6 +443,10 @@ int mrsWatsonMain(ErrorReporter errorReporter, int argc, char** argv) {
   // Display info for plugins in the chain before checking for valid input/output sources
   if(shouldDisplayPluginInfo) {
     pluginChainInspect(pluginChain);
+  }
+  if(programOptions->options[OPTION_EDITOR]->enabled) {
+    pluginChain->plugins[0]->showEditor(pluginChain->plugins[0]);
+    return RETURN_CODE_NOT_RUN;
   }
 
   // Execute any parameter changes

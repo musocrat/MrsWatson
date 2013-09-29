@@ -74,6 +74,11 @@ like so:\n\n\
     "Print information about each plugin in the chain.",
     false, kProgramOptionTypeEmpty, kProgramOptionArgumentTypeNone));
 
+  programOptionsAdd(options, newProgramOptionWithName(OPTION_EDITOR, "editor",
+    "Show plugin editor. Changes made in the editor are not sent to the plugin, \
+this is mostly for debugging plugin GUIs.",
+    false, kProgramOptionTypeEmpty, kProgramOptionArgumentTypeNone));
+
   programOptionsAdd(options, newProgramOptionWithName(OPTION_ERROR_REPORT, "error-report",
     "Generate an error report zipfile on the desktop.",
     false, kProgramOptionTypeString, kProgramOptionArgumentTypeNone));

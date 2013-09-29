@@ -96,6 +96,7 @@ Plugin newPluginPassthru(const CharString pluginName) {
   plugin->processAudio = _pluginPassthruProcessAudio;
   plugin->processMidiEvents = _pluginPassthruProcessMidiEvents;
   plugin->setParameter = _pluginPassthruSetParameter;
+  plugin->showEditor = _pluginPassthruEmpty;
   plugin->closePlugin = _pluginPassthruEmpty;
   plugin->freePluginData = _pluginPassthruEmpty;
 

@@ -30,8 +30,10 @@
 #include "aeffectx.h"
 
 extern "C" {
+#include <X11/Xlib.h>
 #include <dlfcn.h>
 #include <stdlib.h>
+
 #include "base/CharString.h"
 #include "base/LinkedList.h"
 #include "base/PlatformUtilities.h"
@@ -93,6 +95,62 @@ AEffect* loadVst2xPlugin(LibraryHandle libraryHandle) {
   Vst2xPluginEntryFunc mainEntryPoint = entryPoint.entryPointFuncPtr;
   AEffect* plugin = mainEntryPoint(pluginVst2xHostCallback);
   return plugin;
+}
+
+void showVst2xEditor(AEffect *effect) {
+  Display *display;
+  Window window;
+  XEvent event;
+  int result;
+  int width;
+  int height;
+
+  logDebug("Opening X display");
+  display = XOpenDisplay(NULL);
+  if(display == NULL) {
+    logError("Can't open default display");
+    return;
+  }
+
+  logDebug("Getting editor coordinates from plugin");
+  ERect* eRect = 0;
+  effect->dispatcher(effect, effEditGetRect, 0, 0, &eRect, 0);
+  if(eRect)	{
+    width = eRect->right - eRect->left;
+    height = eRect->bottom - eRect->top;
+    logDebug("Plugin window should be %dx%d pixels", width, height);
+  }
+  else {
+    logError("Plugin did not return GUI window size");
+    return;
+  }
+
+  logDebug("Acquiring default screen for X display");
+  result = DefaultScreen(display);
+  logDebug("Creating window");
+  window = XCreateSimpleWindow(display, RootWindow(display, result),
+    0, 0, width, height, 1, BlackPixel(display, result),
+    WhitePixel(display, result));
+  XSelectInput(display, window, ExposureMask | KeyPressMask);
+  XMapWindow(display, window);
+
+  logInfo("Opening plugin editor window");
+  effect->dispatcher(effect, effEditOpen, 0, 0, (void*)window, 0);
+
+  while(true) {
+    XNextEvent(display, &event);
+    if(event.type == Expose) {
+
+    }
+    if(event.type == KeyPress) {
+       break;
+    }
+  }
+
+  logInfo("Closing plugin editor window");
+  effect->dispatcher(effect, effEditClose, 0, 0, 0, 0);
+  XCloseDisplay(display);
+  return;
 }
 
 void closeLibraryHandle(LibraryHandle libraryHandle) {

@@ -48,6 +48,7 @@ extern "C" {
 extern LinkedList getVst2xPluginLocations(CharString currentDirectory);
 extern LibraryHandle getLibraryHandleForPlugin(const CharString pluginAbsolutePath);
 extern AEffect* loadVst2xPlugin(LibraryHandle libraryHandle);
+extern void showVst2xEditor(LibraryHandle handle);
 extern void closeLibraryHandle(LibraryHandle libraryHandle);
 }
 
@@ -101,19 +102,20 @@ static const char* _getVst2xPlatformExtension(void) {
 static void _logPluginVst2xInLocation(void* item, void* userData) {
   File itemFile = (File)item;
   CharString itemPath = newCharStringWithCString(itemFile->absolutePath->data);
+  CharString itemBasename = fileGetBasename(itemFile);
+  CharString itemExtension = fileGetExtension(itemFile);
   boolByte* pluginsFound = (boolByte*)userData;
-  char* dot;
 
   logDebug("Checking item '%s'", itemPath->data);
-  dot = strrchr(itemPath->data, '.');
-  if(dot != NULL) {
-    if(!strncmp(dot + 1, _getVst2xPlatformExtension(), 3)) {
-      *dot = '\0';
-      logInfo("  %s", itemPath->data);
+  if(!charStringIsEmpty(itemExtension)) {
+    if(charStringIsEqualToCString(itemExtension, _getVst2xPlatformExtension(), true)) {
+      logInfo("  %s", itemBasename->data);
       *pluginsFound = true;
     }
   }
 
+  freeCharString(itemExtension);
+  freeCharString(itemBasename);
   freeCharString(itemPath);
 }
 
@@ -192,6 +194,9 @@ static boolByte _doesVst2xPluginExistAtLocation(const CharString pluginName, con
     charStringAppendCString(pluginSearchName, _getVst2xPlatformExtension());
     pluginSearchPath = newFileWithParent(location, pluginSearchName);
   }
+  else
+  logDebug("Search extension is '%s'", pluginSearchExtension->data);
+  logDebug("Plugin name is '%s'", pluginSearchPath->absolutePath->data);
 
   if(fileExists(pluginSearchPath)) {
     result = true;
@@ -457,8 +462,10 @@ static void _displayVst2xPluginInfo(void* pluginPtr) {
       logInfo("Plugin type: other, category %d", pluginCategory);
       break;
   }
+
   logInfo("Version: %d", data->pluginHandle->version);
   logInfo("I/O: %d/%d", data->pluginHandle->numInputs, data->pluginHandle->numOutputs);
+  logInfo("Editor? %s", data->pluginHandle->flags & effFlagsHasEditor ? "yes" : "no");
 
   if(data->isPluginShell && data->shellPluginId == 0) {
     logInfo("Sub-plugins:");
@@ -669,6 +676,18 @@ static void _prepareForProcessingVst2xPlugin(void* pluginPtr) {
   _resumePlugin(plugin);
 }
 
+static void _showVst2xEditor(void *pluginPtr) {
+  Plugin plugin = (Plugin)pluginPtr;
+  PluginVst2xData data = (PluginVst2xData)(plugin->extraData);
+  if((data->pluginHandle->flags & effFlagsHasEditor) != 0) {
+    logDebug("Attempting to open editor for plugin '%s'", plugin->pluginName->data);
+    showVst2xEditor(data->pluginHandle);
+  }
+  else {
+    logError("Plugin '%s' does not have a GUI editor", plugin->pluginName->data);
+  }
+}
+
 static void _closeVst2xPlugin(void *pluginPtr) {
   Plugin plugin = (Plugin)pluginPtr;
   _suspendPlugin(plugin);
@@ -707,6 +726,7 @@ Plugin newPluginVst2x(const CharString pluginName, const CharString pluginRoot) 
   plugin->processMidiEvents = _processMidiEventsVst2xPlugin;
   plugin->setParameter = _setParameterVst2xPlugin;
   plugin->prepareForProcessing = _prepareForProcessingVst2xPlugin;
+  plugin->showEditor = _showVst2xEditor;
   plugin->closePlugin = _closeVst2xPlugin;
   plugin->freePluginData = _freeVst2xPluginData;
 
