@@ -98,6 +98,10 @@ AEffect* loadVst2xPlugin(LibraryHandle libraryHandle) {
 }
 
 void showVst2xEditor(AEffect *effect) {
+  // Bah, this stuff doesn't build so well for 32-bit Linux on a 64-bit
+  // machine. Since most people in the Linux audio community have been able to
+  // move to 64-bit, this feature is unavailable on 32-bit Linux.
+#if WITH_64BIT
   Display *display;
   Window window;
   XEvent event;
@@ -150,7 +154,7 @@ void showVst2xEditor(AEffect *effect) {
   logInfo("Closing plugin editor window");
   effect->dispatcher(effect, effEditClose, 0, 0, 0, 0);
   XCloseDisplay(display);
-  return;
+#endif
 }
 
 void closeLibraryHandle(LibraryHandle libraryHandle) {
