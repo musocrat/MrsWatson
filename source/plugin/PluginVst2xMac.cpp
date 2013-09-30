@@ -120,6 +120,11 @@ AEffect* loadVst2xPlugin(LibraryHandle libraryHandle) {
   return plugin;
 }
 
+void showVst2xEditor(AEffect *effect);
+void showVst2xEditor(AEffect *effect) {
+  
+}
+
 void closeLibraryHandle(LibraryHandle libraryHandle);
 void closeLibraryHandle(LibraryHandle libraryHandle) {
   CFBundleUnloadExecutable(libraryHandle);

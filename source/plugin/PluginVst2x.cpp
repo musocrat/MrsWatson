@@ -48,7 +48,7 @@ extern "C" {
 extern LinkedList getVst2xPluginLocations(CharString currentDirectory);
 extern LibraryHandle getLibraryHandleForPlugin(const CharString pluginAbsolutePath);
 extern AEffect* loadVst2xPlugin(LibraryHandle libraryHandle);
-extern void showVst2xEditor(LibraryHandle handle);
+extern void showVst2xEditor(AEffect* effect);
 extern void closeLibraryHandle(LibraryHandle libraryHandle);
 }
 
