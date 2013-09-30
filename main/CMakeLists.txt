@@ -1,9 +1,6 @@
 cmake_minimum_required(VERSION 2.6)
 project(mrswatsonmain)
 
-# TODO: Probably can remove this
-include_directories(${CMAKE_SOURCE_DIR}/source)
-link_directories(${CMAKE_SOURCE_DIR}/source /usr/lib/x86_64-linux-gnu)
 file(GLOB mrswatsonmain_SOURCES *.c)
 
 # On unix, we can build both the 32/64 bit versions at once. However with
