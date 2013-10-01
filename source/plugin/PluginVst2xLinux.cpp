@@ -105,7 +105,7 @@ void showVst2xEditor(AEffect *effect) {
   Display *display;
   Window window;
   XEvent event;
-  int result;
+  int screenNumber;
   int width;
   int height;
 
@@ -130,11 +130,19 @@ void showVst2xEditor(AEffect *effect) {
   }
 
   logDebug("Acquiring default screen for X display");
-  result = DefaultScreen(display);
-  logDebug("Creating window");
-  window = XCreateSimpleWindow(display, RootWindow(display, result),
-    0, 0, width, height, 1, BlackPixel(display, result),
-    WhitePixel(display, result));
+  screenNumber = DefaultScreen(display);
+  Screen *screen = DefaultScreenOfDisplay(display);
+  int screenWidth = WidthOfScreen(screen);
+  int screenHeight = HeightOfScreen(screen);
+  logDebug("Screen dimensions: %dx%d", screenWidth, screenHeight);
+
+  int windowX = (screenWidth - width) / 2;
+  int windowY = (screenHeight - height) / 2;
+  logDebug("Creating window at %dx%d", windowX, windowY);
+  window = XCreateSimpleWindow(display, RootWindow(display, screenNumber),
+    windowX, windowY, width, height, 1, BlackPixel(display, screenNumber),
+    WhitePixel(display, screenNumber));
+
   XSelectInput(display, window, ExposureMask | KeyPressMask);
   XMapWindow(display, window);
 
