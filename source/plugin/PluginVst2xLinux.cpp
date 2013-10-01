@@ -162,6 +162,8 @@ void showVst2xEditor(AEffect *effect) {
   logInfo("Closing plugin editor window");
   effect->dispatcher(effect, effEditClose, 0, 0, 0, 0);
   XCloseDisplay(display);
+#else
+  logUnsupportedFeature("Show plugin editor");
 #endif
 }
 
@@ -170,6 +172,5 @@ void closeLibraryHandle(LibraryHandle libraryHandle) {
     logWarn("Could not safely close plugin, possible resource leak");
   }
 }
-
 } // extern "C"
 #endif
