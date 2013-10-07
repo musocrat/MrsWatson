@@ -57,6 +57,11 @@ typedef enum {
   NUM_PLUGIN_SETTINGS
 } PluginSetting;
 
+typedef struct {
+  unsigned int width;
+  unsigned int height;
+} PluginWindowSize;
+
 /**
  * Called when a plugin is to be opened. This includes loading any dynamic
  * libraries into memory initializing the plugin.

@@ -116,18 +116,7 @@ void showVst2xEditor(AEffect *effect) {
     return;
   }
 
-  logDebug("Getting editor coordinates from plugin");
-  ERect* eRect = 0;
-  effect->dispatcher(effect, effEditGetRect, 0, 0, &eRect, 0);
-  if(eRect)	{
-    width = eRect->right - eRect->left;
-    height = eRect->bottom - eRect->top;
-    logDebug("Plugin window should be %dx%d pixels", width, height);
-  }
-  else {
-    logError("Plugin did not return GUI window size");
-    return;
-  }
+#error pluginVst2xGetWindowRect()
 
   logDebug("Acquiring default screen for X display");
   screenNumber = DefaultScreen(display);

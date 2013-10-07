@@ -48,7 +48,7 @@ extern "C" {
 extern LinkedList getVst2xPluginLocations(CharString currentDirectory);
 extern LibraryHandle getLibraryHandleForPlugin(const CharString pluginAbsolutePath);
 extern AEffect* loadVst2xPlugin(LibraryHandle libraryHandle);
-extern void showVst2xEditor(AEffect* effect);
+extern void showVst2xEditor(AEffect* effect, const CharString pluginName, PluginWindowSize* rect);
 extern void closeLibraryHandle(LibraryHandle libraryHandle);
 }
 
@@ -676,12 +676,33 @@ static void _prepareForProcessingVst2xPlugin(void* pluginPtr) {
   _resumePlugin(plugin);
 }
 
+static boolByte _pluginVst2xGetWindowRect(Plugin self, PluginWindowSize* outRect) {
+  PluginVst2xData data = (PluginVst2xData)(self->extraData);
+  ERect* editorRect = 0;
+
+  logDebug("Getting editor window size from plugin");
+  data->pluginHandle->dispatcher(data->pluginHandle, effEditGetRect, 0, 0, &editorRect, 0);
+  if(editorRect != NULL) {
+    outRect->width = editorRect->right - editorRect->left;
+    outRect->height = editorRect->bottom - editorRect->top;
+    logDebug("Plugin window should be %dx%d px", outRect->width, outRect->height);
+    return true;
+  }
+  else {
+    logError("Plugin did not return GUI window size");
+    return false;
+  }
+}
+
 static void _showVst2xEditor(void *pluginPtr) {
   Plugin plugin = (Plugin)pluginPtr;
   PluginVst2xData data = (PluginVst2xData)(plugin->extraData);
+  PluginWindowSize windowSize;
   if((data->pluginHandle->flags & effFlagsHasEditor) != 0) {
     logDebug("Attempting to open editor for plugin '%s'", plugin->pluginName->data);
-    showVst2xEditor(data->pluginHandle);
+    if(_pluginVst2xGetWindowRect(plugin, &windowSize)) {
+      showVst2xEditor(data->pluginHandle, plugin->pluginName, &windowSize);
+    }
   }
   else {
     logError("Plugin '%s' does not have a GUI editor", plugin->pluginName->data);

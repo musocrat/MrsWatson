@@ -29,13 +29,19 @@
 #define VST_FORCE_DEPRECATED 0
 #include "aeffectx.h"
 
+#import <AppKit/AppKit.h>
+#import <Cocoa/Cocoa.h>
+#import <CoreFoundation/CFBundle.h>
+#import <Foundation/Foundation.h>
+#import "PluginVst2xMacWindow.h"
+
 extern "C" {
 #include <stdlib.h>
-#include <CoreFoundation/CFBundle.h>
 #include "base/CharString.h"
 #include "base/LinkedList.h"
 #include "base/PlatformUtilities.h"
 #include "logging/EventLogger.h"
+#include "plugin/Plugin.h"
 #include "plugin/PluginVst2xHostCallback.h"
 
 LinkedList getVst2xPluginLocations(CharString currentDirectory);
@@ -120,9 +126,43 @@ AEffect* loadVst2xPlugin(LibraryHandle libraryHandle) {
   return plugin;
 }
 
-void showVst2xEditor(AEffect *effect);
-void showVst2xEditor(AEffect *effect) {
-  
+void showVst2xEditor(AEffect* effect, const CharString pluginName, PluginWindowSize* rect);
+void showVst2xEditor(AEffect* effect, const CharString pluginName, PluginWindowSize* rect) {
+  NSRect frame;
+  NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+  [NSApplication sharedApplication];
+  VstWindowAppDelegate *appDelegate = [[[VstWindowAppDelegate alloc] init] autorelease];
+  [NSApp setDelegate:appDelegate];
+  NSApplicationLoad();
+
+  NSRect mainScreenRect = [[NSScreen mainScreen] frame];
+  frame.origin.x = (mainScreenRect.size.width - rect->width) / 2;
+  frame.origin.y = (mainScreenRect.size.height - rect->height) / 2;
+  frame.size.width = rect->width;
+  frame.size.height = rect->height;
+  NSUInteger windowStyleMask = NSTitledWindowMask | NSResizableWindowMask |
+    NSClosableWindowMask | NSMiniaturizableWindowMask;
+  NSWindow* window  = [[[NSWindow alloc] initWithContentRect:frame
+                                                   styleMask:windowStyleMask
+                                                     backing:NSBackingStoreBuffered
+                                                       defer:NO]
+                       autorelease];
+  NSRect innerFrame = NSMakeRect(0, 0, rect->width, rect->height);
+  NSView *view = [[[NSView alloc] initWithFrame:innerFrame] autorelease];
+  [window setContentView:view];
+  NSString *windowTitle = [[[NSString alloc] initWithBytes:pluginName->data
+                                                    length:strlen(pluginName->data)
+                                                  encoding:NSASCIIStringEncoding]
+                          autorelease];
+  [window setTitle:windowTitle];
+  [window makeKeyAndOrderFront:NSApp];
+  logDebug("Opening plugin editor window");
+  effect->dispatcher(effect, effEditOpen, 0, 0, (void*)view, 0);
+  [window orderFrontRegardless];
+  logDebug("Starting app runloop");
+  [NSApp run];
+  logDebug("App runloop stopped");
+  [pool release];
 }
 
 void closeLibraryHandle(LibraryHandle libraryHandle);
