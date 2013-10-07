@@ -152,7 +152,7 @@ void showVst2xEditor(AEffect *effect) {
   effect->dispatcher(effect, effEditClose, 0, 0, 0, 0);
   XCloseDisplay(display);
 #else
-  logUnsupportedFeature("Show plugin editor");
+  logUnsupportedFeature("Show plugin editor on 32-bit OS");
 #endif
 }
 

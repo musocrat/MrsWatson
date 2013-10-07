@@ -128,6 +128,7 @@ AEffect* loadVst2xPlugin(LibraryHandle libraryHandle) {
 
 void showVst2xEditor(AEffect* effect, const CharString pluginName, PluginWindowSize* rect);
 void showVst2xEditor(AEffect* effect, const CharString pluginName, PluginWindowSize* rect) {
+#if WITH_64BIT
   NSRect frame;
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
   [NSApplication sharedApplication];
@@ -142,7 +143,7 @@ void showVst2xEditor(AEffect* effect, const CharString pluginName, PluginWindowS
   frame.size.height = rect->height;
   NSUInteger windowStyleMask = NSTitledWindowMask | NSResizableWindowMask |
     NSClosableWindowMask | NSMiniaturizableWindowMask;
-  NSWindow* window  = [[[NSWindow alloc] initWithContentRect:frame
+  NSWindow *window  = [[[NSWindow alloc] initWithContentRect:frame
                                                    styleMask:windowStyleMask
                                                      backing:NSBackingStoreBuffered
                                                        defer:NO]
@@ -163,6 +164,9 @@ void showVst2xEditor(AEffect* effect, const CharString pluginName, PluginWindowS
   [NSApp run];
   logDebug("App runloop stopped");
   [pool release];
+#else
+  logUnsupportedFeature("Show plugin editor on 32-bit OS");
+#endif
 }
 
 void closeLibraryHandle(LibraryHandle libraryHandle);
