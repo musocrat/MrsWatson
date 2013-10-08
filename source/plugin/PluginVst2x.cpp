@@ -685,7 +685,7 @@ static boolByte _pluginVst2xGetWindowRect(Plugin self, PluginWindowSize* outRect
   if(editorRect != NULL) {
     outRect->width = editorRect->right - editorRect->left;
     outRect->height = editorRect->bottom - editorRect->top;
-    logDebug("Plugin window should be %dx%d px", outRect->width, outRect->height);
+    logDebug("Plugin window should be %dx%d pixels", outRect->width, outRect->height);
     return true;
   }
   else {

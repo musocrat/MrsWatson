@@ -38,6 +38,7 @@ extern "C" {
 #include "base/LinkedList.h"
 #include "base/PlatformUtilities.h"
 #include "logging/EventLogger.h"
+#include "plugin/Plugin.h"
 #include "plugin/PluginVst2xHostCallback.h"
 
 LinkedList getVst2xPluginLocations(CharString currentDirectory) {
@@ -97,7 +98,7 @@ AEffect* loadVst2xPlugin(LibraryHandle libraryHandle) {
   return plugin;
 }
 
-void showVst2xEditor(AEffect *effect) {
+extern void showVst2xEditor(AEffect* effect, const CharString pluginName, PluginWindowSize* rect) {
   // Bah, this stuff doesn't build so well for 32-bit Linux on a 64-bit
   // machine. Since most people in the Linux audio community have been able to
   // move to 64-bit, this feature is unavailable on 32-bit Linux.
@@ -106,8 +107,6 @@ void showVst2xEditor(AEffect *effect) {
   Window window;
   XEvent event;
   int screenNumber;
-  int width;
-  int height;
 
   logDebug("Opening X display");
   display = XOpenDisplay(NULL);
@@ -116,8 +115,6 @@ void showVst2xEditor(AEffect *effect) {
     return;
   }
 
-#error pluginVst2xGetWindowRect()
-
   logDebug("Acquiring default screen for X display");
   screenNumber = DefaultScreen(display);
   Screen *screen = DefaultScreenOfDisplay(display);
@@ -125,15 +122,16 @@ void showVst2xEditor(AEffect *effect) {
   int screenHeight = HeightOfScreen(screen);
   logDebug("Screen dimensions: %dx%d", screenWidth, screenHeight);
 
-  int windowX = (screenWidth - width) / 2;
-  int windowY = (screenHeight - height) / 2;
+  int windowX = (screenWidth - rect->width) / 2;
+  int windowY = (screenHeight - rect->height) / 2;
   logDebug("Creating window at %dx%d", windowX, windowY);
   window = XCreateSimpleWindow(display, RootWindow(display, screenNumber),
-    windowX, windowY, width, height, 1, BlackPixel(display, screenNumber),
+    0, 0, rect->width, rect->height, 1, BlackPixel(display, screenNumber),
     WhitePixel(display, screenNumber));
-
+  XStoreName(display, window, pluginName->data);
   XSelectInput(display, window, ExposureMask | KeyPressMask);
   XMapWindow(display, window);
+  XMoveWindow(display, window, windowX, windowY);
 
   logInfo("Opening plugin editor window");
   effect->dispatcher(effect, effEditOpen, 0, 0, (void*)window, 0);
@@ -150,6 +148,7 @@ void showVst2xEditor(AEffect *effect) {
 
   logInfo("Closing plugin editor window");
   effect->dispatcher(effect, effEditClose, 0, 0, 0, 0);
+  XDestroyWindow(display, window);
   XCloseDisplay(display);
 #else
   logUnsupportedFeature("Show plugin editor on 32-bit OS");
