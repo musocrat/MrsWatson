@@ -127,7 +127,7 @@ extern void showVst2xEditor(AEffect* effect, const CharString pluginName, Plugin
   logDebug("Creating window at %dx%d", windowX, windowY);
   window = XCreateSimpleWindow(display, RootWindow(display, screenNumber),
     0, 0, rect->width, rect->height, 1, BlackPixel(display, screenNumber),
-    WhitePixel(display, screenNumber));
+    BlackPixel(display, screenNumber));
   XStoreName(display, window, pluginName->data);
   XSelectInput(display, window, ExposureMask | KeyPressMask);
   XMapWindow(display, window);
