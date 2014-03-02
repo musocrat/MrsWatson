@@ -41,10 +41,10 @@ boolByte readBlockFromAudiofile(void* sampleSourcePtr, SampleBuffer sampleBuffer
   SampleSource sampleSource = (SampleSource)sampleSourcePtr;
   SampleSourceAudiofileData extraData = (SampleSourceAudiofileData)(sampleSource->extraData);
 
-  int numFramesRead;
-  int currentInterlacedSample = 0;
-  int currentDeinterlacedSample = 0;
-  int currentChannel;
+  unsigned int numFramesRead;
+  unsigned int currentInterlacedSample = 0;
+  unsigned int currentDeinterlacedSample = 0;
+  unsigned int currentChannel;
   
   if(extraData->interlacedBuffer == NULL) {
     extraData->interlacedBuffer = (float*)malloc(sizeof(float) * getNumChannels() * getBlocksize());
