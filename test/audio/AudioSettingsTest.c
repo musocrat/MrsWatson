@@ -62,8 +62,8 @@ static int _testSetInvalidBlocksize(void) {
 }
 
 static int _testSetTempo(void) {
-  setTempo(123.45);
-  assertDoubleEquals(getTempo(), 123.45, TEST_FLOAT_TOLERANCE);
+  setTempo(123.45f);
+  assertDoubleEquals(getTempo(), 123.45f, TEST_FLOAT_TOLERANCE);
   return 0;
 }
 
