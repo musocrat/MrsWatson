@@ -32,6 +32,10 @@
 #include "base/CharString.h"
 #include "base/Types.h"
 
+#ifndef HAVE_LIBAUDIOFILE
+#define HAVE_LIBAUDIOFILE 1
+#endif
+
 typedef enum {
   SAMPLE_SOURCE_TYPE_INVALID,
   SAMPLE_SOURCE_TYPE_SILENCE,
