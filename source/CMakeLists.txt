@@ -38,3 +38,5 @@ elseif(MSVC)
   endif()
 endif()
 
+include_directories(${CMAKE_SOURCE_DIR}/vendor/audiofile/libaudiofile)
+
