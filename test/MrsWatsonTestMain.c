@@ -15,12 +15,13 @@
 #include "base/File.h"
 #include "base/FileUtilities.h"
 #include "base/PlatformUtilities.h"
+#include "logging/LogPrinter.h"
+#include "time/AudioClock.h"
 #include "unit/ApplicationRunner.h"
 #include "unit/TestRunner.h"
 
 #include "MrsWatsonTestMain.h"
 #include "MrsWatson.h"
-#include "logging/LogPrinter.h"
 
 extern LinkedList getTestSuites(void);
 extern TestSuite findTestSuite(LinkedList testSuites, const CharString testSuiteName);
@@ -182,6 +183,7 @@ int main(int argc, char* argv[]) {
   char* colon;
   char* testCaseName;
 
+  initAudioClock();
   initEventLogger();
   timer = newTaskTimer(NULL, NULL);
   taskTimerStart(timer);
