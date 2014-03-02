@@ -173,9 +173,10 @@ void runApplicationTest(const TestEnvironment testEnvironment,
   result = CreateProcessA((LPCSTR)(testEnvironment->applicationPath), (LPSTR)(arguments->data),
     0, 0, false, CREATE_DEFAULT_ERROR_MODE, 0, 0, &startupInfo, &processInfo);
   if(result) {
-    // TODO: Check return codes for these calls
     WaitForSingleObject(processInfo.hProcess, kApplicationRunnerWaitTimeoutInMs);
-    GetExitCodeProcess(processInfo.hProcess, (LPDWORD)&resultCode);
+    if(!GetExitCodeProcess(processInfo.hProcess, (LPDWORD)&resultCode)) {
+      logWarn("GetExitCodeProcess failed, result code probably incorrect");
+    }
     CloseHandle(processInfo.hProcess);
     CloseHandle(processInfo.hThread);
   }
