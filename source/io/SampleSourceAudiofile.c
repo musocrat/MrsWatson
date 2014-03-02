@@ -84,7 +84,7 @@ boolByte writeBlockToAudiofile(void* sampleSourcePtr, const SampleBuffer sampleB
     extraData->pcmBuffer = (short*)malloc(sizeof(short) * getNumChannels() * getBlocksize());
   }
   memset(extraData->pcmBuffer, 0, sizeof(short) * getNumChannels() * getBlocksize());
-  convertSampleBufferToPcmData(sampleBuffer, extraData->pcmBuffer, false);
+  sampleBufferGetPcmSamples(sampleBuffer, extraData->pcmBuffer, false);
 
   result = afWriteFrames(extraData->fileHandle, AF_DEFAULT_TRACK, extraData->pcmBuffer, getBlocksize());
   sampleSource->numSamplesProcessed += getBlocksize() * getNumChannels();
