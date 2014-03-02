@@ -182,6 +182,7 @@ int main(int argc, char* argv[]) {
   char* colon;
   char* testCaseName;
 
+  initEventLogger();
   timer = newTaskTimer(NULL, NULL);
   taskTimerStart(timer);
 
@@ -208,7 +209,6 @@ int main(int argc, char* argv[]) {
   }
 
   if(programOptions->options[OPTION_TEST_VERBOSE]->enabled) {
-    initEventLogger();
     setLogLevel(LOG_DEBUG);
   }
 
