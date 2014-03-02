@@ -41,33 +41,6 @@ if(UNIX)
 endif()
 message("Output directory: ${EXECUTABLE_OUTPUT_PATH}")
 
-# Third-party dependencies #####################################
-
-include(ExternalProject)
-set(generic_CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=${CMAKE_SOURCE_DIR}/build CFLAGS=${arch_flags} CXXFLAGS=${arch_flags} LDFLAGS=${arch_flags} --enable-static)
-
-# libaudiofile ################################################################
-
-ExternalProject_Add(libaudiofile
-  SOURCE_DIR ${CMAKE_SOURCE_DIR}/vendor/audiofile
-  INSTALL_DIR ${CMAKE_SOURCE_DIR}/build
-  CONFIGURE_COMMAND ${generic_CONFIGURE_COMMAND}
-  PREFIX ${CMAKE_SOURCE_DIR}/build/audiofile
-  TMP_DIR ${CMAKE_SOURCE_DIR}/build/audiofile/tmp
-  BUILD_COMMAND ${MAKE}
-  BUILD_IN_SOURCE 1
-)
-
-ExternalProject_Add(libaudiofile64
-  SOURCE_DIR ${CMAKE_SOURCE_DIR}/vendor/audiofile
-  INSTALL_DIR ${CMAKE_SOURCE_DIR}/build
-  CONFIGURE_COMMAND ${generic_CONFIGURE_COMMAND}
-  PREFIX ${CMAKE_SOURCE_DIR}/build/audiofile
-  TMP_DIR ${CMAKE_SOURCE_DIR}/build/audiofile/tmp
-  BUILD_COMMAND ${MAKE}
-  BUILD_IN_SOURCE 1
-)
-
 # Build Flags ##################################################
 
 if(MSVC)
@@ -114,6 +87,7 @@ endif()
 
 # Subdirectories ###############################################
 
+add_subdirectory(vendor/audiofile)
 add_subdirectory(source)
 add_subdirectory(main)
 add_subdirectory(test)
