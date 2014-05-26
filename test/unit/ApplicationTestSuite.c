@@ -110,6 +110,14 @@ void runApplicationTestSuite(TestEnvironment environment) {
     buildTestArgumentString("--plugin mrs_limiter --input \"%s\"", a440_stereo_pcm),
     RETURN_CODE_SUCCESS, kDefaultTestOutputFileType
   );
+  runApplicationTest(environment, "Process with internal gain plugin",
+    buildTestArgumentString("--plugin mrs_gain --parameter 0,0.5 --input \"%s\"", a440_stereo_pcm),
+    RETURN_CODE_SUCCESS, kDefaultTestOutputFileType
+  );
+  runApplicationTest(environment, "Process with internal gain plugin and invalid parameter",
+    buildTestArgumentString("--plugin mrs_gain --parameter 1,0.5 --input \"%s\"", a440_stereo_pcm),
+    RETURN_CODE_INVALID_ARGUMENT, NULL
+  );
 #if 0
   // This test case works, but fails the analysis check for silence (obviously).
   // It will remain disabled until we have a smarter way to specify which analysis
