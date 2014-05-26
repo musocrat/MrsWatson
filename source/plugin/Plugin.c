@@ -71,6 +71,8 @@ static void _logPluginLocation(const CharString location) {
 static void _listAvailablePluginsInternal(void) {
   CharString internalLocation = newCharStringWithCString("(Internal)");
   _logPluginLocation(internalLocation);
+  logInfo("  %s", kInternalPluginGainName);
+  logInfo("  %s", kInternalPluginLimiterName);
   logInfo("  %s", kInternalPluginPassthruName);
   logInfo("  %s", kInternalPluginSilenceName);
   freeCharString(internalLocation);
