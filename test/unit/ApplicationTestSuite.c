@@ -106,6 +106,10 @@ void runApplicationTestSuite(TestEnvironment environment) {
     buildTestArgumentString("--plugin mrs_passthru --input \"%s\"", a440_stereo_pcm),
     RETURN_CODE_SUCCESS, kDefaultTestOutputFileType
   );
+  runApplicationTest(environment, "Process with internal limiter",
+    buildTestArgumentString("--plugin mrs_limiter --input \"%s\"", a440_stereo_pcm),
+    RETURN_CODE_SUCCESS, kDefaultTestOutputFileType
+  );
 #if 0
   // This test case works, but fails the analysis check for silence (obviously).
   // It will remain disabled until we have a smarter way to specify which analysis

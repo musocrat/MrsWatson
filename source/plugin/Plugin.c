@@ -33,6 +33,7 @@
 #include "logging/EventLogger.h"
 #include "audio/AudioSettings.h"
 #include "plugin/Plugin.h"
+#include "plugin/PluginLimiter.h"
 #include "plugin/PluginPassthru.h"
 #include "plugin/PluginVst2x.h"
 #include "plugin/PluginSilence.h"
@@ -103,7 +104,10 @@ Plugin pluginFactory(const CharString pluginName, const CharString pluginRoot) {
     case PLUGIN_TYPE_VST_2X:
       return newPluginVst2x(pluginName, pluginRoot);
     case PLUGIN_TYPE_INTERNAL:
-      if(_internalPluginNameMatches(pluginName, kInternalPluginPassthruName)) {
+      if(_internalPluginNameMatches(pluginName, kInternalPluginLimiterName)) {
+        return newPluginLimiter(pluginName);
+      }
+      else if(_internalPluginNameMatches(pluginName, kInternalPluginPassthruName)) {
         return newPluginPassthru(pluginName);
       }
       else if(_internalPluginNameMatches(pluginName, kInternalPluginSilenceName)) {
